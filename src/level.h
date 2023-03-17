@@ -1,5 +1,9 @@
 #include <fstream>
 #include <vector>
+#include "SDL.h"
+
+#ifndef LEVEL_H
+#define LEVEL_H
 
 class Level
 {
@@ -39,11 +43,20 @@ public:
 
     auto get_lvl_board() -> std::vector<std::vector<int>>*;
 
+    auto create_walls_from_board() -> void;
+
+    auto WallCell(int x, int y) -> bool;
+
+    auto get_walls() const -> std::vector<SDL_Point>;
+
 private:
     std::string _lvl_file;
     std::string _lvl_folder{"../lvl/"};
     std::vector<std::vector<int>>* _lvl_board;
+    std::vector<SDL_Point> _wall_cells;
 
     auto ParseLine(std::string line) -> std::vector<int>;
 
 };
+
+#endif

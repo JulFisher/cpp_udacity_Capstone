@@ -5,9 +5,10 @@
 
 Level::Level(int _lvl)
 {
-    _lvl_file = "level_" + std::to_string(_lvl) + ".board";
+    _lvl_file = _lvl_folder + "level_" + std::to_string(_lvl) + ".board";
     _lvl_board = new std::vector<std::vector<int>>{};
-
+    create_lvl_board(_lvl_file);
+    create_walls_from_board();
 }
 
 Level::~Level()
@@ -47,6 +48,47 @@ auto Level::create_lvl_board(const std::string _path) -> void
         }
     }
 }
+
+auto Level::create_walls_from_board() -> void
+{
+    int x{0}, y{0};
+    for (auto const &row : *_lvl_board) 
+    {
+        for (auto const &column : row)
+        {
+            if (column == 1)
+            {
+                SDL_Point point{x, y}; 
+                _wall_cells.push_back(point);
+                y++;
+            }
+            else
+            {
+                y++;
+            }
+        }
+        x++;
+    }
+
+}
+
+auto Level::WallCell (int x, int y)-> bool
+{
+    for (auto const &cell : _wall_cells) 
+    {
+        if (x == cell.x && y == cell.y) 
+        {
+        return true;
+        }
+    }
+    return false;
+}
+
+auto Level::get_walls() const -> std::vector<SDL_Point>
+{
+    return _wall_cells;
+}
+
 
 auto Level::ParseLine(std::string line) -> std::vector<int>
 {

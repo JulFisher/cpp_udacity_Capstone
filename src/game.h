@@ -6,6 +6,7 @@
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
+#include "level.h"
 
 class Game {
  public:
@@ -17,6 +18,7 @@ class Game {
 
  private:
   Snake snake;
+  Level _level;
   SDL_Point food;
   int food_count;
 
@@ -29,6 +31,7 @@ class Game {
 
   void PlaceFood();
   void Update();
+  void ChangeLevel();
 };
 
 #endif
