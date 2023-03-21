@@ -4,7 +4,7 @@
 
 Game::Game(std::size_t grid_width, std::size_t grid_height, std::string lvl_path)
     : snake(grid_width, grid_height),
-      level(lvl_path),
+      level(lvl_path, grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)) {
@@ -21,7 +21,8 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   bool running = true;
   //CapStone: update new member variables for game setup
   lvl_counter = level.get_lvl_amount();
-  level.create_lvl_board(lvl_number);
+  level.create_walls_from_board(lvl_number);
+  bool level_change = false;
 
 
   while (running) {
@@ -39,13 +40,20 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_count++;
     frame_duration = frame_end - frame_start;
 
-    //CapStone: Add level change functionality
-    if (score%20 == 0 && lvl_number != lvl_counter)
+    //CapStone: Check if level should be change
+    if (level_score != 0 && level_score % 10 == 0) 
     {
-        ++lvl_number;
-        level.create_lvl_board(lvl_number);
-        snake.speed -= 1.2;
+      level_change = true;
+      lvl_number++;
+      level_score = 0;
+    }
+    //CapStone: Add level change functionality
+    if (level_change && lvl_number < lvl_counter)
+    {
+        level.create_walls_from_board(lvl_number);
+        snake.speed -= 0.12;
         snake.ResetBody();
+        level_change = false;
     }
 
     // After every second, update the window title.
@@ -91,6 +99,7 @@ void Game::Update() {
   // Check if there's food over here
   if (food.x == new_x && food.y == new_y) {
     score++;
+    level_score++;
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();

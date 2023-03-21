@@ -31,6 +31,7 @@ class Game {
   std::uniform_int_distribution<int> random_h;
 
   int score{0};
+  int level_score{0};
   //CapStone: new private member variables
   int lvl_number{0};
   size_t lvl_counter{0};

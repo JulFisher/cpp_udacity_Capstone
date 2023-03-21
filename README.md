@@ -13,7 +13,7 @@ In a new folder 'lvl' the level files are stored which the object of the new cla
 The added feature should work like this:
 
 1. The game starts with a blank level as it was used to.
-2. Every time after achieving a 'score % 20 == 0'  the next level should start.
+2. Every time after achieving a 'score % 10 == 0'  the next level should start.
     * New wall design should appear.
     * Snake body should reset.
     * Snake speed should be reduce by 1.2.

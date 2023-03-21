@@ -48,12 +48,16 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, Level const &lev
   SDL_RenderClear(sdl_renderer);
 
   // Render walls
-  SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xCC, 0xFF);
-  auto walls = level.get_walls();
-  for (auto const &point : walls) {
-    block.x = point.x * block.w;
-    block.y = point.y * block.h;
-    SDL_RenderFillRect(sdl_renderer, &block);
+  if (!level.get_walls().empty())
+  {
+    auto walls = level.get_walls();
+    SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xCC, 0xFF);
+    for (auto const &point : walls) 
+    {
+      block.x = point.x * block.w;
+      block.y = point.y * block.h;
+      SDL_RenderFillRect(sdl_renderer, &block);
+    }
   }
 
   // Render food
@@ -85,6 +89,6 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, Level const &lev
 }
 //CapStone: Update window title
 void Renderer::UpdateWindowTitle(int score, int fps, int level_number) {
-  std::string title{" Level: " + std::to_string(level_number+1) + "Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
+  std::string title{" Snake Level: " + std::to_string(level_number+1) + " Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }

@@ -17,7 +17,6 @@ int main() {
 
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
-  //CapStone: Add input to game
   Game game(kGridWidth, kGridHeight, kLvlPath);
   game.Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";
