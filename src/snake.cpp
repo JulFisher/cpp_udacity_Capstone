@@ -81,3 +81,7 @@ bool Snake::SnakeCell(int x, int y) {
   }
   return false;
 }
+
+void Snake::ResetBody() {
+  body.clear();
+}

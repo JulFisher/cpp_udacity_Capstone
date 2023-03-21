@@ -2,12 +2,12 @@
 #include <iostream>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
+Game::Game(std::size_t grid_width, std::size_t grid_height, std::string lvl_path)
     : snake(grid_width, grid_height),
+      level(lvl_path),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
-      random_h(0, static_cast<int>(grid_height - 1)),
-      _level(2) {
+      random_h(0, static_cast<int>(grid_height - 1)) {
   PlaceFood();
 }
 
@@ -19,6 +19,10 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
+  //CapStone: update new member variables for game setup
+  lvl_counter = level.get_lvl_amount();
+  level.create_lvl_board(lvl_number);
+
 
   while (running) {
     frame_start = SDL_GetTicks();
@@ -26,7 +30,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food, _level);
+    renderer.Render(snake, food, level);
 
     frame_end = SDL_GetTicks();
 
@@ -35,9 +39,18 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     frame_count++;
     frame_duration = frame_end - frame_start;
 
+    //CapStone: Add level change functionality
+    if (score%20 == 0 && lvl_number != lvl_counter)
+    {
+        ++lvl_number;
+        level.create_lvl_board(lvl_number);
+        snake.speed -= 1.2;
+        snake.ResetBody();
+    }
+
     // After every second, update the window title.
     if (frame_end - title_timestamp >= 1000) {
-      renderer.UpdateWindowTitle(score, frame_count);
+      renderer.UpdateWindowTitle(score, frame_count, lvl_number);
       frame_count = 0;
       title_timestamp = frame_end;
     }
@@ -58,7 +71,8 @@ void Game::PlaceFood() {
     y = random_h(engine);
     // Check that the location is not occupied by a snake item before placing
     // food.
-    if (!snake.SnakeCell(x, y) && !_level.WallCell(x, y)) {
+    //CapStone: check also if food is on no wall cell
+    if (!snake.SnakeCell(x, y) && !level.WallCell(x, y)) {
       food.x = x;
       food.y = y;
       return;
@@ -69,7 +83,7 @@ void Game::PlaceFood() {
 void Game::Update() {
   if (!snake.alive) return;
 
-  snake.Update(_level);
+  snake.Update(level);
 
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
@@ -86,3 +100,4 @@ void Game::Update() {
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
+int Game::GetLevel() const { return lvl_number; }

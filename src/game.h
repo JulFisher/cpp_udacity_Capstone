@@ -10,15 +10,18 @@
 
 class Game {
  public:
-  Game(std::size_t grid_width, std::size_t grid_height);
+ //CapStone: add input path to level folder to constructor
+  Game(std::size_t grid_width, std::size_t grid_height, std::string lvl_path);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore() const;
   int GetSize() const;
+  //CapStone: new getter function
+  int GetLevel() const;
 
  private:
   Snake snake;
-  Level _level;
+  Level level;
   SDL_Point food;
   int food_count;
 
@@ -28,6 +31,9 @@ class Game {
   std::uniform_int_distribution<int> random_h;
 
   int score{0};
+  //CapStone: new private member variables
+  int lvl_number{0};
+  size_t lvl_counter{0};
 
   void PlaceFood();
   void Update();

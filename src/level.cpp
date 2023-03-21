@@ -1,19 +1,20 @@
+//CapStone: Implementation of the new level class member functions
+
 #include <level.h>
 #include <fstream>
 #include <sstream>
 #include <memory>
+#include <filesystem>
 
-Level::Level(int _lvl)
+Level::Level(std::string _lvl_path)
 {
-    _lvl_file = _lvl_folder + "level_" + std::to_string(_lvl) + ".board";
-    _lvl_board = new std::vector<std::vector<int>>{};
-    create_lvl_board(_lvl_file);
-    create_walls_from_board();
+    for(const auto & entry : std::filesystem::directory_iterator(_lvl_path))
+        _lvl_paths.push_back(entry.path());
 }
 
 Level::~Level()
 {
-    if(_lvl_board != nullptr) 
+    if(_lvl_board != nullptr)
     {
         delete _lvl_board;
         _lvl_board = nullptr;
@@ -23,21 +24,20 @@ Level::~Level()
 Level::Level(const Level &source)
 {
         _lvl_board = source._lvl_board;
-        _lvl_file = source._lvl_file;
-        _lvl_folder = source._lvl_folder;
+        _lvl_paths = source._lvl_paths;
 }
 
 Level::Level(Level &&source)
 {
         _lvl_board = source._lvl_board;
-        _lvl_file = source._lvl_file;
-        _lvl_folder = source._lvl_folder;
+        _lvl_paths = source._lvl_paths;
         source._lvl_board = nullptr;
 }
 
-auto Level::create_lvl_board(const std::string _path) -> void
+auto Level::create_lvl_board(const int lvl_number) -> void
 {
-    std::ifstream lvl_file (_path);
+    auto path = _lvl_paths[lvl_number];
+    std::ifstream lvl_file (path);
     if (lvl_file)
     {
         std::string line;
@@ -52,13 +52,13 @@ auto Level::create_lvl_board(const std::string _path) -> void
 auto Level::create_walls_from_board() -> void
 {
     int x{0}, y{0};
-    for (auto const &row : *_lvl_board) 
+    for (auto const &row : *_lvl_board)
     {
         for (auto const &column : row)
         {
             if (column == 1)
             {
-                SDL_Point point{x, y}; 
+                SDL_Point point{x, y};
                 _wall_cells.push_back(point);
                 y++;
             }
@@ -74,9 +74,9 @@ auto Level::create_walls_from_board() -> void
 
 auto Level::WallCell (int x, int y)-> bool
 {
-    for (auto const &cell : _wall_cells) 
+    for (auto const &cell : _wall_cells)
     {
-        if (x == cell.x && y == cell.y) 
+        if (x == cell.x && y == cell.y)
         {
         return true;
         }
@@ -101,4 +101,9 @@ auto Level::ParseLine(std::string line) -> std::vector<int>
         row.push_back(n);
     }
     return row;
+}
+
+auto Level::get_lvl_amount() -> size_t
+{
+    return _lvl_paths.size();
 }

@@ -1,3 +1,5 @@
+//CapStone: Definition new level class introduce to snake game
+
 #include <fstream>
 #include <vector>
 #include "SDL.h"
@@ -9,7 +11,7 @@ class Level
 {
 public:
 
-    Level(int _lvl);
+    Level(std::string _lvl_paths);
     ~Level();
     Level(const Level &source);
     Level(Level &&source);
@@ -23,8 +25,7 @@ public:
                 _lvl_board = new std::vector<std::vector<int>>;
                 *_lvl_board = *source._lvl_board;
             }
-            _lvl_file = source._lvl_file;
-            _lvl_folder = source._lvl_folder;
+            _lvl_paths = source._lvl_paths;
 
             return *this;
     }
@@ -32,14 +33,13 @@ public:
     Level &operator=(Level &&source)
     {
         _lvl_board = source._lvl_board;
-        _lvl_file = source._lvl_file;
-        _lvl_folder = source._lvl_folder;
+        _lvl_paths = source._lvl_paths;
         source._lvl_board = nullptr;
 
         return *this;
     }
-    
-    auto create_lvl_board(const std::string _path) -> void;
+
+    auto create_lvl_board(const int lvl_number) -> void;
 
     auto get_lvl_board() -> std::vector<std::vector<int>>*;
 
@@ -49,10 +49,11 @@ public:
 
     auto get_walls() const -> std::vector<SDL_Point>;
 
+    auto get_lvl_amount() -> size_t;
+
 private:
-    std::string _lvl_file;
-    std::string _lvl_folder{"../lvl/"};
-    std::vector<std::vector<int>>* _lvl_board;
+    std::vector<std::string> _lvl_paths{};
+    std::vector<std::vector<int>>* _lvl_board = new std::vector<std::vector<int>>{};;
     std::vector<SDL_Point> _wall_cells;
 
     auto ParseLine(std::string line) -> std::vector<int>;
