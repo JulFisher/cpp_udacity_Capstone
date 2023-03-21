@@ -14,9 +14,9 @@ The added feature should work like this:
 
 1. The game starts with a blank level as it was used to.
 2. Every time after achieving a 'score % 20 == 0'  the next level should start.
-  * New wall design should appear.
-  * Snake body should reset.
-  * Snake speed should be reduce by 1.2.
+    * New wall design should appear.
+    * Snake body should reset.
+    * Snake speed should be reduce by 1.2.
 3. If the head of the snake touchs a wall the snake dies.
 4. No food should be placed on a wall.
 
@@ -27,18 +27,18 @@ The added feature should work like this:
 General: All code additions / adaptions can be found with the flag "CapStone" in the code comments.
 
 1. The project demonstrates an understanding of C++ functions and control structures.
-  * E.g. if statement (game.cpp, line 43), for and while loops (level.cpp, line 44, 55, 77)
+    * E.g. if statement (game.cpp, line 43), for and while loops (level.cpp, line 44, 55, 77)
 2. The project reads data from a file and process the data, or the program writes data to a file.
-  * In the class Level function create_lvl_board(...) (level.cpp, line 37)
+    * In the class Level function create_lvl_board(...) (level.cpp, line 37)
 3. The project uses Object Oriented Programming techniques.
-  * Introduced new class 'Level' (level.h, level.cpp)
+    * Introduced new class 'Level' (level.h, level.cpp)
 4. Classes use appropriate access specifiers for class members.
-  * Defined and implemented setter, getter, constructor, destructor for new class 'Level' (level.h, level.cpp)
+    * Defined and implemented setter, getter, constructor, destructor for new class 'Level' (level.h, level.cpp)
 5. Classes encapsulate behavior. (level.h, level.cpp)
 6. The project makes use of references in function declarations. (level.h, line 18, 42, 48)
 7. The project uses destructors appropriately. (level.cpp, line 15)
 8. The project follows the Rule of 5.
-  * Only for the new introduced class 'Level' (level.h, level.cpp)
+    * Only for the new introduced class 'Level' (level.h, level.cpp)
 
 ## Dependencies for Running Locally
 * cmake >= 3.7
