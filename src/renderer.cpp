@@ -47,11 +47,11 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, Level const &lev
   SDL_SetRenderDrawColor(sdl_renderer, 0x1E, 0x1E, 0x1E, 0xFF);
   SDL_RenderClear(sdl_renderer);
 
-  // Render walls
+  //CapStone: Render level walls
   if (!level.get_walls().empty())
   {
     auto walls = level.get_walls();
-    SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xCC, 0xFF);
+    SDL_SetRenderDrawColor(sdl_renderer, 0x00, 0x80, 0x80, 0xFF);
     for (auto const &point : walls) 
     {
       block.x = point.x * block.w;

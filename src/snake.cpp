@@ -81,7 +81,7 @@ bool Snake::SnakeCell(int x, int y) {
   }
   return false;
 }
-
+//CaptStone: Implementation of new function to reset snake body at level change
 void Snake::ResetBody() {
   body.clear();
 }

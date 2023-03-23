@@ -1,7 +1,7 @@
 #include "game.h"
 #include <iostream>
 #include "SDL.h"
-
+//CapStone: Added 'level' Object to initialization list.
 Game::Game(std::size_t grid_width, std::size_t grid_height, std::string lvl_path)
     : snake(grid_width, grid_height),
       level(lvl_path, grid_width, grid_height),
@@ -19,7 +19,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
-  //CapStone: update new member variables for game setup
+  //CapStone: update new member variables for game setup and set additional variable
   lvl_counter = level.get_lvl_amount();
   level.create_walls_from_board(lvl_number);
   bool level_change = false;
